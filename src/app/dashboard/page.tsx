@@ -6,6 +6,15 @@ import { getWorkoutPlan } from "@/utils/getWorkoutPlan";
 import { getFoodRecommendations } from "@/utils/getFoodRecommendations";
 import WorkoutCard from "@/components/WorkoutCard";
 import FoodCard from "@/components/FoodCard";
+import { motion } from "framer-motion";
+import {
+  MdFitnessCenter,
+  MdRestaurantMenu,
+  MdEmojiEvents,
+  MdEmojiObjects,
+} from "react-icons/md";
+import { GiProgression } from "react-icons/gi";
+import { FaRegSmileBeam } from "react-icons/fa";
 
 export default function DashboardPage() {
   const { userData } = useUserData();
@@ -16,7 +25,7 @@ export default function DashboardPage() {
         <h2 className="text-xl font-semibold">No user data found</h2>
         <p>
           Please complete your{" "}
-          <a href="/onboarding" className="text-green-600 underline">
+          <a href="/onboarding" className="text-blue-600 underline">
             onboarding
           </a>
           .
@@ -29,22 +38,112 @@ export default function DashboardPage() {
   const foodSuggestions = getFoodRecommendations(userData);
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Welcome back, {userData.name}!</h1>
+    <div className="max-w-6xl mx-auto px-6 py-10 font-sans text-gray-800">
+      {/* Hero Welcome */}
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        className="text-center mb-12"
+      >
+        <h1 className="text-4xl sm:text-5xl font-bold text-blue-700 mb-2">
+          Welcome back, {userData.name}! 👋
+        </h1>
+        <p className="text-lg text-gray-600">
+          Let’s keep up the momentum today! 🚀
+        </p>
+      </motion.div>
 
-      <section className="mb-8">
-        <h2 className="text-2xl font-semibold mb-4">Your Workout Plan</h2>
-        {workoutPlan.map((w, i) => (
-          <WorkoutCard key={i} workout={w} />
-        ))}
+      {/* Progress Fun Card */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="bg-gradient-to-r from-green-100 via-white to-blue-100 rounded-xl p-6 mb-10 shadow-lg flex items-center gap-4"
+      >
+        <GiProgression size={40} className="text-green-600" />
+        <div>
+          <p className="text-lg font-medium text-gray-700">
+            You're on a{" "}
+            <span className="text-green-700 font-bold">3-day</span> streak!
+          </p>
+          <p className="text-sm text-gray-600">
+            Keep it going and earn a badge 🏆
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Workout Section */}
+      <section className="mb-14">
+        <div className="flex items-center gap-3 mb-6">
+          <MdFitnessCenter className="text-blue-600" size={28} />
+          <h2 className="text-2xl font-semibold text-gray-800">
+            Your Workout Plan
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {workoutPlan.map((w, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <WorkoutCard workout={w} />
+            </motion.div>
+          ))}
+        </div>
       </section>
 
-      <section>
-        <h2 className="text-2xl font-semibold mb-4">Nutrition Suggestions</h2>
-        {foodSuggestions.map((food, i) => (
-          <FoodCard key={i} name={food.name} description={food.description} />
-        ))}
+      {/* Nutrition Section */}
+      <section className="mb-14">
+        <div className="flex items-center gap-3 mb-6">
+          <MdRestaurantMenu className="text-red-500" size={28} />
+          <h2 className="text-2xl font-semibold text-gray-800">
+            Nutrition Suggestions
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {foodSuggestions.map((food, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <FoodCard name={food.name} description={food.description} />
+            </motion.div>
+          ))}
+        </div>
       </section>
+
+      {/* Fun Fact Section */}
+      <motion.div
+        className="bg-yellow-100 p-6 rounded-xl flex items-start gap-4 text-yellow-800 shadow-md"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.2 }}
+      >
+        <MdEmojiObjects size={32} />
+        <div>
+          <h3 className="font-semibold text-lg mb-1">Did you know?</h3>
+          <p className="text-sm">
+            Exercising just 30 minutes a day boosts mental clarity and reduces stress.
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Motivational Quote */}
+      <motion.div
+        className="text-center mt-12"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <p className="italic text-gray-600 text-sm">
+          “The body achieves what the mind believes.” 💪
+        </p>
+      </motion.div>
     </div>
   );
 }
